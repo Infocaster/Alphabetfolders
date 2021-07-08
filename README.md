@@ -1,20 +1,17 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Alphabetfolders 
+This package creates AlphabetFolders for the specified doctype for Umbraco 8
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+# Behavior
+- When you create a document with doctype "itemDocType", this package will automatically create alphabet folders for it
+- When you edit the name, the document is automatically moved to the correct alphabet folder
+- Automatically cleans up empty alphabet folders
+- Orders the alphabet folders and items inside the alphabet folders by with every action
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Configuration
+Add these keys/values to your appSettings section in the web.config:
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+Key: "alphabetfolders:ItemDocType" - the doctype alias to create alphabetfolders for (e.g. "newsItem") - comma separated values are allowed for multiple doctype aliases 
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+Key: "alphabetfolders:FolderDocType" - the doctype to use for creating the letter folders (e.g "AlphabetFolder")
+
+Key: "alphabetfolders:OrderByDescending"  - boolean indicating sort order for date folders (default: false)
