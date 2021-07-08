@@ -20,4 +20,4 @@ Key: "alphabetfolders:OrderByDescending"  - boolean indicating sort order for da
 ## Changelog
 
 Version 3.0.0
-- Updated to use umbraco v8.
+- Updated to use umbraco v8
