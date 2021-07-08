@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Text;
 using System.Web;
 using Umbraco.Core;
 using Umbraco.Core.Composing;
@@ -11,7 +9,6 @@ using Umbraco.Core.Logging;
 using Umbraco.Core.Models;
 using Umbraco.Core.Services;
 using Umbraco.Core.Services.Implement;
-
 
 namespace InfoCaster.Umbraco.AlphabetFolders.Composers
 {
@@ -29,6 +26,7 @@ namespace InfoCaster.Umbraco.AlphabetFolders.Composers
         static string _folderDocType;
         static readonly string _allowedCharacters = "abcdefghijklmnopqrstuvwxyz0123456789".ToUpper();
         static readonly object _syncer = new object();
+        private readonly bool _orderByDescending;
 
         private readonly ILogger _logger;
         private readonly IContentService _contentService;
@@ -40,12 +38,19 @@ namespace InfoCaster.Umbraco.AlphabetFolders.Composers
             _contentService = contentService;
             _contentTypeService = contentTypeService;
 
-            // Todo: Implement parentDoctype logic
-
             if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["alphabetfolders:ItemDocType"]) && !string.IsNullOrEmpty(ConfigurationManager.AppSettings["alphabetfolders:FolderDocType"]))
             {
                 _itemDocTypes = ConfigurationManager.AppSettings["alphabetfolders:ItemDocType"].Split(',');
                 _folderDocType = ConfigurationManager.AppSettings["alphabetfolders:FolderDocType"];
+            }
+
+            var orderByDescendingString = ConfigurationManager.AppSettings["alphabetFolders:OrderByDescending"];
+            if (!string.IsNullOrEmpty(orderByDescendingString))
+            {
+                if (!bool.TryParse(orderByDescendingString, out _orderByDescending))
+                {
+                    _logger.Error<AlphabetfoldersComponent>(new ConfigurationErrorsException("datefolders:OrderByDecending in not a valid boolean (true/false)"), "alphabetFolders:OrderByDescending configuration is not a valid boolean value");
+                }
             }
         }
 
@@ -73,8 +78,6 @@ namespace InfoCaster.Umbraco.AlphabetFolders.Composers
                         HttpContext.Current.Items.Remove("parentId");
                         IContent parent = _contentService.GetById(parentId);
                         DeleteAlphabeticFolder(parent);
-
-                        // Todo: Refresh tree in umbraco?
                     }
                 }
                 catch (Exception ex)
@@ -130,6 +133,8 @@ namespace InfoCaster.Umbraco.AlphabetFolders.Composers
                 {
                     if (!string.IsNullOrEmpty(content.Name))
                     {
+                        // Todo: Check parent doctype
+
                         IContent parentFolder = _contentService.GetById(content.ParentId);
                         IContent alphabeticFolder = null;
                         if (parentFolder.ContentType.Alias == _folderDocType)
@@ -178,8 +183,6 @@ namespace InfoCaster.Umbraco.AlphabetFolders.Composers
 
                                 OrderChildrenByName(alphabeticFolder);
                                 OrderChildrenByName(parentFolder);
-
-                                // Todo: Refresh tree in umbraco?
                             }
                         }
                     }
@@ -195,7 +198,7 @@ namespace InfoCaster.Umbraco.AlphabetFolders.Composers
         /// <summary>
         /// Orders the children from a document by their name
         /// </summary>
-        void OrderChildrenByName(IContent parent, bool orderByDesc = false)
+        void OrderChildrenByName(IContent parent)
         {
             lock (_syncer)
             {
@@ -206,7 +209,7 @@ namespace InfoCaster.Umbraco.AlphabetFolders.Composers
                     int childCount = _contentService.CountChildren(parent.Id);
                     var childItems = _contentService.GetPagedChildren(parent.Id, 0, childCount, out totalChildren);
 
-                    var orderedItems = orderByDesc ? childItems.OrderByDescending(x => x.Name) : childItems.OrderBy(x => x.Name);
+                    var orderedItems = _orderByDescending ? childItems.OrderByDescending(x => x.Name) : childItems.OrderBy(x => x.Name);
 
                     _contentService.Sort(orderedItems);
                 }
