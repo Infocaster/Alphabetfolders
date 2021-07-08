@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <appSettings>
+    <add key="alphabetfolders:ItemDocType" value="detailPage" />
+    <add key="alphabetfolders:ParentItemDocType" value="alphabetOverviewPage" />
+    <add key="alphabetfolders:FolderDocType" value="alphabetFolder" />
+  </appSettings>
+</configuration>
