@@ -5,7 +5,7 @@ branches:
     tag: alpha
   develop: 
     tag: beta
-  master:
+  main:
     tag: ''
 ignore:
   sha: []
