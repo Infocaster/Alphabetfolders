@@ -15,3 +15,9 @@ Key: "alphabetfolders:ItemDocType" - the doctype alias to create alphabetfolders
 Key: "alphabetfolders:FolderDocType" - the doctype to use for creating the letter folders (e.g "AlphabetFolder")
 
 Key: "alphabetfolders:OrderByDescending"  - boolean indicating sort order for date folders (default: false)
+
+
+## Changelog
+
+Version 3.0.0
+- Updated to use umbraco v8.
