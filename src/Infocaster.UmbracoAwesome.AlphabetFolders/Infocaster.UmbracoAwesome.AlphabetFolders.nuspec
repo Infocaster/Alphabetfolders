@@ -17,7 +17,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\Infocaster.UmbracoAwesome.AlphabetFolders.dll" target="lib" />
+        <file src="bin\Infocaster.Umbraco.AlphabetFolders" target="lib" />
         <file src="*.transform" target="content" />
     </files>
 </package>

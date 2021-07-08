@@ -10,7 +10,7 @@ using Umbraco.Core.Models;
 using Umbraco.Core.Services;
 using Umbraco.Core.Services.Implement;
 
-namespace InfoCaster.Umbraco.AlphabetFolders.Composers
+namespace Infocaster.Umbraco.AlphabetFolders.Composers
 {
     public class AlphabetfoldersComposer : IUserComposer
     {
