@@ -1,21 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <umbPackage>
   <files>
-    <file>
-      <guid>InfoCaster.Umbraco.AlphabetFolders.dll</guid>
-      <orgPath>/bin</orgPath>
-      <orgName>InfoCaster.Umbraco.AlphabetFolders.dll</orgName>
-    </file>
-	<file>
-      <guid>InfoCaster.Umbraco.AlphabetFolders.pdb</guid>
-      <orgPath>/bin</orgPath>
-      <orgName>InfoCaster.Umbraco.AlphabetFolders.pdb</orgName>
-    </file>
+   <file path="src/Infocaster.UmbracoAwesome.AlphabetFolders/bin/Infocaster.Umbraco.AlphabetFolders.dll" orgPath="bin/Infocaster.Umbraco.AlphabetFolders.dll" />
   </files>
   <info>
     <package>
       <name>AlphabetFolders</name>
-      <version>2.0</version>
+      <version>3.0</version>
       <license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
       <url>http://our.umbraco.org/projects/developer-tools/alphabetfolders</url>
       <requirements>
@@ -25,10 +16,10 @@
       </requirements>
     </package>
     <author>
-      <name>Jacco van der Plas and Stefan Kip - InfoCaster</name>
-      <website>http://www.infocaster.net</website>
+      <name>Jacco van der Plas, Stefan Kip and Erik Eelman - Infocaster</name>
+      <website>https://www.infocaster.net</website>
     </author>
-    <readme><![CDATA[This package creates AlphabetFolders for the specified doctype for Umbraco 6.1+
+    <readme><![CDATA[This package creates AlphabetFolders for the specified doctype for Umbraco 8
     
 Behavior
 
@@ -44,6 +35,9 @@ Add these keys/values to your appSettings section in the web.config:
 - Key: "alphabetfolders:FolderDocType" - the doctype to use for creating the alphabet folders (e.g "AlphabetFolder")
 
 Changelog
+
+Version 3.0
+- Umbraco 8
 
 Version 2.0
 - Umbraco 6 and 7 version (at least 6.1)]]></readme>
