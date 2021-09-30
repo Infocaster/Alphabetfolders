@@ -3,12 +3,13 @@
     <metadata>
         <id>Infocaster.Umbraco.AlphabetFolders</id>
         <version>3.0.0</version>
-        <title>Infocaster Alphabet</title>
+        <title>Infocaster Alphabet folders</title>
         <authors>Infocaster</authors>
         <owners>Infocaster</owners>
-        <projectUrl>https://bitbucket.org/infocaster/datefolders-umbracoawesome</projectUrl>
+        <projectUrl>https://our.umbraco.com/packages/developer-tools/alphabetfolders/</projectUrl>
         <iconUrl>https://infocaster.net/favicon.ico</iconUrl>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+		<licenseUrl>https://opensource.org/licenses/mit-license.php</licenseUrl>
         <description>AlphabetFolders for Umbraco</description>
         <releaseNotes/>
         <copyright>Infocaster Copyright 2021</copyright>

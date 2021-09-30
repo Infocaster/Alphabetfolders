@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<umbPackage>
+  <files>
+   <file path="src/Infocaster.UmbracoAwesome.AlphabetFolders/bin/Infocaster.Umbraco.AlphabetFolders.dll" orgPath="bin/Infocaster.Umbraco.AlphabetFolders.dll" />
+  </files>
+  <info>
+    <package>
+      <name>AlphabetFolders</name>
+      <version>3.0</version>
+      <license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
+      <url>http://our.umbraco.org/projects/developer-tools/alphabetfolders</url>
+      <requirements>
+        <major>3</major>
+        <minor>0</minor>
+        <patch>0</patch>
+      </requirements>
+    </package>
+    <author>
+      <name>Jacco van der Plas, Stefan Kip and Erik Eelman - Infocaster</name>
+      <website>https://www.infocaster.net</website>
+    </author>
+    <readme><![CDATA[This package creates AlphabetFolders for the specified doctype for Umbraco 8
+    
+Behavior
+
+- When you create a document with doctype "itemDocType", this package will automatically create alphabet folders for it
+- When you edit the name, the document is automatically moved to the correct alphabet folder
+- Automatically cleans up empty alphabet folders
+- Orders the alphabet folders and items inside the alphabet folders by with every action
+
+Configuration
+
+Add these keys/values to your appSettings section in the web.config:
+- Key: "alphabetfolders:ItemDocType" - the doctype alias to create alphabetfolders for - comma separated values are allowed for multiple doctype aliases
+- Key: "alphabetfolders:FolderDocType" - the doctype to use for creating the alphabet folders (e.g "AlphabetFolder")
+
+Changelog
+
+Version 3.0
+- Umbraco 8
+
+Version 2.0
+- Umbraco 6 and 7 version (at least 6.1)]]></readme>
+  </info>
+  <DocumentTypes />
+  <Templates />
+  <Stylesheets />
+  <Macros />
+  <DictionaryItems />
+  <Languages />
+  <DataTypes />
+</umbPackage>
