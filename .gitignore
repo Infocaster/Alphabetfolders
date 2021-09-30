@@ -41,3 +41,4 @@ artifacts/
 
 # Typescript output
 **/Typescripts/**/*.js
+/AlphabetFolders_3.0.zip
