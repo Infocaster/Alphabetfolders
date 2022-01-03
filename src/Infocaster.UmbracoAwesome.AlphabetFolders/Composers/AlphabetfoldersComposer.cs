@@ -23,6 +23,7 @@ namespace Infocaster.Umbraco.AlphabetFolders.Composers
     public class AlphabetfoldersComponent : IComponent
     {
         static string[] _itemDocTypes;
+        static string[] _allowedParentIds;
         static string _folderDocType;
         static readonly string _allowedCharacters = "abcdefghijklmnopqrstuvwxyz0123456789".ToUpper();
         static readonly object _syncer = new object();
@@ -41,6 +42,7 @@ namespace Infocaster.Umbraco.AlphabetFolders.Composers
             if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["alphabetfolders:ItemDocType"]) && !string.IsNullOrEmpty(ConfigurationManager.AppSettings["alphabetfolders:FolderDocType"]))
             {
                 _itemDocTypes = ConfigurationManager.AppSettings["alphabetfolders:ItemDocType"].Split(',');
+                _allowedParentIds = ConfigurationManager.AppSettings["alphabetfolders:AllowedParentIds"].Split(',');
                 _folderDocType = ConfigurationManager.AppSettings["alphabetfolders:FolderDocType"];
             }
 
@@ -154,6 +156,9 @@ namespace Infocaster.Umbraco.AlphabetFolders.Composers
 
                         if ((alphabeticFolder != null && alphabeticFolder.Name != firstLetter) || alphabeticFolder == null)
                         {
+                            //Check if id is in allowed ids, if not; don't create folders
+                            if (_allowedParentIds.Length > 0 && !_allowedParentIds.Contains(Convert.ToString(content.ParentId))) return;
+
                             if (_itemDocTypes.Contains(content.ContentType.Alias))
                             {
                                 IContent oldParent = alphabeticFolder;

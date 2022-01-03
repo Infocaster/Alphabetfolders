@@ -6,7 +6,7 @@
   <info>
     <package>
       <name>AlphabetFolders</name>
-      <version>3.0</version>
+      <version>3.1</version>
       <license url="http://www.opensource.org/licenses/mit-license.php">MIT license</license>
       <url>http://our.umbraco.org/projects/developer-tools/alphabetfolders</url>
       <requirements>
@@ -19,7 +19,8 @@
       <name>Jacco van der Plas, Stefan Kip and Erik Eelman - Infocaster</name>
       <website>https://www.infocaster.net</website>
     </author>
-    <readme><![CDATA[This package creates AlphabetFolders for the specified doctype for Umbraco 8
+    <readme>
+	<![CDATA[This package creates AlphabetFolders for the specified doctype for Umbraco 8
     
 Behavior
 
@@ -33,8 +34,13 @@ Configuration
 Add these keys/values to your appSettings section in the web.config:
 - Key: "alphabetfolders:ItemDocType" - the doctype alias to create alphabetfolders for - comma separated values are allowed for multiple doctype aliases
 - Key: "alphabetfolders:FolderDocType" - the doctype to use for creating the alphabet folders (e.g "AlphabetFolder")
+- Key: "alphabetfolders:AllowedParentIds" - the ids for specific documents for which the folders need to be made. Makes it possible to only create new folders for specific documents in case there are multiple documents of the same type - comma seperated values are allowed for multiple documents (OPTIONAL)
+
 
 Changelog
+
+Version 3.0.1
+- Added optional key alphabetfolders:AllowedParentIds to specify specific documents for which the AlphabetFolders need to be made.
 
 Version 3.0
 - Umbraco 8
