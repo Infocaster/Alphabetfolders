@@ -41,8 +41,8 @@ namespace Infocaster.Umbraco.AlphabetFolders.Composers
 
             if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["alphabetfolders:ItemDocType"]) && !string.IsNullOrEmpty(ConfigurationManager.AppSettings["alphabetfolders:FolderDocType"]))
             {
-                _itemDocTypes = ConfigurationManager.AppSettings["alphabetfolders:ItemDocType"].Split(',');
-                _allowedParentIds = ConfigurationManager.AppSettings["alphabetfolders:AllowedParentIds"].Split(',');
+                _itemDocTypes = ConfigurationManager.AppSettings["alphabetfolders:ItemDocType"].Split(',').Select(x => x.Trim()).ToArray();
+                _allowedParentIds = ConfigurationManager.AppSettings["alphabetfolders:AllowedParentIds"].Split(',').Select(x => x.Trim()).ToArray();
                 _folderDocType = ConfigurationManager.AppSettings["alphabetfolders:FolderDocType"];
             }
 
