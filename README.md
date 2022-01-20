@@ -16,8 +16,12 @@ Key: "alphabetfolders:FolderDocType" - the doctype to use for creating the lette
 
 Key: "alphabetfolders:OrderByDescending"  - boolean indicating sort order for date folders (default: false)
 
+Key: "alphabetfolders:AllowedParentIds" - the ids for specific documents for which the folders need to be made. Makes it possible to only create new folders for specific documents in case there are multiple documents of the same type - comma seperated values are allowed for multiple documents (OPTIONAL)
 
 ## Changelog
+
+Version 3.0.1
+- Added optional key alphabetfolders:AllowedParentIds to specify specific documents for which the AlphabetFolders need to be made.
 
 Version 3.0.0
 - Updated to use umbraco v8
