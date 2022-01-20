@@ -1,202 +1,186 @@
-﻿using System;
-using System.Configuration;
+﻿using AlphabetFolder9.Extensions;
+using AlphabetFolder9.Helpers;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
 using System.Linq;
-using System.Web;
-using Umbraco.Core;
-using Umbraco.Core.Composing;
-using Umbraco.Core.Events;
-using Umbraco.Core.Logging;
-using Umbraco.Core.Models;
-using Umbraco.Core.Services;
-using Umbraco.Core.Services.Implement;
+using Umbraco.Cms.Core.Composing;
+using Umbraco.Cms.Core.DependencyInjection;
+using Umbraco.Cms.Core.Events;
+using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Notifications;
+using Umbraco.Cms.Core.Services;
+using Umbraco.Extensions;
 
-namespace Infocaster.Umbraco.AlphabetFolders.Composers
+namespace AlphabetFolder9.Composers
 {
-    public class AlphabetfoldersComposer : IUserComposer
+    public class AlphabetFoldersComposer : IComposer
     {
-        public void Compose(Composition composition)
+        public void Compose(IUmbracoBuilder builder)
         {
-            composition.Components().Append<AlphabetfoldersComponent>();
+            builder.Services.Configure<AlphabetConfigBase>(builder.Config.GetSection("AlphabetFolders"));
+            builder.AddNotificationHandler<ContentMovedToRecycleBinNotification, CustomContentMovedToRecycleBinNotificationHandler>();
+            builder.AddNotificationHandler<ContentMovingToRecycleBinNotification, CustomContentMovingToRecycleBinNotification>();
+            builder.AddNotificationHandler<ContentSavedNotification, CustomContentSavedNotification>();
         }
     }
 
-    public class AlphabetfoldersComponent : IComponent
+    public class CustomContentMovingToRecycleBinNotification : INotificationHandler<ContentMovingToRecycleBinNotification>
     {
-        static string[] _itemDocTypes;
-        static string[] _allowedParentIds;
-        static string _folderDocType;
-        static readonly string _allowedCharacters = "abcdefghijklmnopqrstuvwxyz0123456789".ToUpper();
-        static readonly object _syncer = new object();
-        private readonly bool _orderByDescending;
-
-        private readonly ILogger _logger;
+        private readonly ILogger<ContentMovingToRecycleBinNotification> _logger;
         private readonly IContentService _contentService;
-        private readonly IContentTypeService _contentTypeService;
+        private AlphabetConfigBase _options;
 
-        public AlphabetfoldersComponent(ILogger logger, IContentService contentService, IContentTypeService contentTypeService)
+        public CustomContentMovingToRecycleBinNotification(IOptions<AlphabetConfigBase> options, ILogger<ContentMovingToRecycleBinNotification> logger, IContentService contentService)
         {
+            _options = options.Value;
             _logger = logger;
             _contentService = contentService;
-            _contentTypeService = contentTypeService;
+        }
 
-            if (!string.IsNullOrEmpty(ConfigurationManager.AppSettings["alphabetfolders:ItemDocType"]) && !string.IsNullOrEmpty(ConfigurationManager.AppSettings["alphabetfolders:FolderDocType"]))
+        public void Handle(ContentMovingToRecycleBinNotification notification)
+        {
+            //save context of parent (if parent is alphabetfolder) to delete it in Deleted event
+            foreach (var item in notification.MoveInfoCollection)
             {
-                _itemDocTypes = ConfigurationManager.AppSettings["alphabetfolders:ItemDocType"].Split(',');
-                _allowedParentIds = ConfigurationManager.AppSettings["alphabetfolders:AllowedParentIds"].Split(',');
-                _folderDocType = ConfigurationManager.AppSettings["alphabetfolders:FolderDocType"];
-            }
-
-            var orderByDescendingString = ConfigurationManager.AppSettings["alphabetFolders:OrderByDescending"];
-            if (!string.IsNullOrEmpty(orderByDescendingString))
-            {
-                if (!bool.TryParse(orderByDescendingString, out _orderByDescending))
+                if (!_options.ItemDocTypes.Contains(item.Entity.ContentType.Alias)) continue;
+                try
                 {
-                    _logger.Error<AlphabetfoldersComponent>(new ConfigurationErrorsException("datefolders:OrderByDecending in not a valid boolean (true/false)"), "alphabetFolders:OrderByDescending configuration is not a valid boolean value");
+                    var parent = _contentService.GetById(item.Entity.ParentId);
+                    if (parent == null || !parent.ContentType.Alias.Equals(_options.FolderDocType)) continue;
+
+                    notification.State.Add(item.Entity.GetUdi().ToString(), parent.Id);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
                 }
             }
         }
+    }
 
-        public void Initialize()
+    public class CustomContentMovedToRecycleBinNotificationHandler : INotificationHandler<ContentMovedToRecycleBinNotification>
+    {
+        private readonly AlphabetConfigBase _options;
+        private readonly ILogger<CustomContentMovedToRecycleBinNotificationHandler> _logger;
+        private readonly IContentService _contentService;
+
+        public CustomContentMovedToRecycleBinNotificationHandler(IOptions<AlphabetConfigBase> options, ILogger<CustomContentMovedToRecycleBinNotificationHandler> logger, IContentService contentService)
         {
-            if (_itemDocTypes == null || !_itemDocTypes.Any() || string.IsNullOrEmpty(_folderDocType)) return;
-
-            ContentService.Saved += ContentService_Saved;
-            ContentService.Trashing += ContentService_Trashing;
-            ContentService.Trashed += ContentService_Trashed;
+            _options = options.Value;
+            _logger = logger;
+            _contentService = contentService;
         }
 
-        private void ContentService_Trashed(IContentService sender, MoveEventArgs<IContent> e)
+        public void Handle(ContentMovedToRecycleBinNotification notification)
         {
-            foreach (var item in e.MoveInfoCollection)
+            foreach (var item in notification.MoveInfoCollection)
             {
-                if (!_itemDocTypes.Contains(item.Entity.ContentType.Alias)) continue;
-                if (!HttpContext.Current.Items.Contains("parentId")) continue;
+                string itemKey = item.Entity.GetUdi().ToString();
+
+                if (!_options.ItemDocTypes.Contains(item.Entity.ContentType.Alias)) continue;
+                if (!notification.State.ContainsKey(itemKey)) continue;
 
                 try
                 {
                     int parentId = -1;
-                    if (int.TryParse(HttpContext.Current.Items["parentId"].ToString(), out parentId) && parentId > 0)
+                    if (int.TryParse(notification.State[itemKey].ToString(), out parentId) && parentId > 0)
                     {
-                        HttpContext.Current.Items.Remove("parentId");
+                        notification.State.Remove(itemKey);
                         IContent parent = _contentService.GetById(parentId);
-                        DeleteAlphabeticFolder(parent);
+
+                        ContentHelper.DeleteAlphabeticFolder(_options.FolderDocType, parent, _contentService);
+                        
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Todo: Show error message?
-                    _logger.Error<AlphabetfoldersComponent>(ex, "DateFolders ContentService_Trashed exception");
+                    _logger.LogError(ex.Message);
+                }
+            }
+        }
+    }
+
+    public class CustomContentSavedNotification : INotificationHandler<ContentSavedNotification>
+    {
+        private readonly ILogger<ContentSavedNotification> _logger;
+        private readonly IContentService _contentService;
+        private readonly AlphabetConfigBase _options;
+
+        public CustomContentSavedNotification(ILogger<ContentSavedNotification> logger, IContentService contentService, IOptions<AlphabetConfigBase> options)
+        {
+            _logger = logger;
+            _contentService = contentService;
+            _options = options.Value;
+
+            if (_options.ItemDocTypes == null || string.IsNullOrEmpty(_options.FolderDocType))
+            {
+                _logger.LogError("One or more of the values required are null or empty.");
+            }
+        }
+        public void Handle(ContentSavedNotification notification)
+        {
+            foreach (IContent content in notification.SavedEntities)
+            {
+                //Check if id is in allowed ids, if not; don't create folders
+                if (_options.AllowedParentIds == null || !_options.AllowedParentIds.Contains(content.ParentId)) continue;
+
+                if (_options.ItemDocTypes.Contains(content.ContentType.Alias) && !string.IsNullOrEmpty(content.Name))
+                {
+                    CreateAlphabetFolderAsync(content);
                 }
             }
         }
 
-        private void ContentService_Saved(IContentService sender, ContentSavedEventArgs e)
+        public void CreateAlphabetFolderAsync(IContent content)
         {
-            foreach (IContent content in e.SavedEntities)
+            try
             {
-                CreateAlphabeticFolder(content);
-            }
-        }
+                IContent parentFolder = _contentService.GetById(content.ParentId);
+                IContent alphabeticFolder = null;
 
-        private void ContentService_Trashing(IContentService sender, MoveEventArgs<IContent> e)
-        {
-            foreach (var item in e.MoveInfoCollection)
-            {
-                if (!_itemDocTypes.Contains(item.Entity.ContentType.Alias)) continue;
-
-                try
+                //if parent is a AlphabetFolder, go one parent further up
+                if (parentFolder.ContentType.Alias == _options.FolderDocType)
                 {
-                    var parent = _contentService.GetById(item.Entity.ParentId);
-                    if (parent == null || !parent.ContentType.Alias.Equals(_folderDocType)) continue;
-
-                    HttpContext.Current.Items.Add("parentId", parent.Id);
-
+                    alphabeticFolder = parentFolder;
+                    parentFolder = _contentService.GetById(parentFolder.ParentId);
                 }
-                catch (Exception ex)
-                {
-                    // Todo: Show error message?
-                    _logger.Error<AlphabetfoldersComponent>(ex);
-                }
-            }
-        }
 
-        public void Terminate()
-        {
-        }
+                //get the firstLetter to use as folder (filter for valid letters)
+                string firstLetter = new String(content.Name.TakeWhile(Char.IsLetterOrDigit).ToArray()).Substring(0, 1).ToUpper();
 
-        /// <summary>
-        /// Creates an alphabetic folder for the first letter of the Documents name
-        /// </summary>
-        void CreateAlphabeticFolder(IContent content)
-        {
-            if (_itemDocTypes.Contains(content.ContentType.Alias))
-            {
-                try
+                if (alphabeticFolder == null || alphabeticFolder.Name != firstLetter)
                 {
-                    if (!string.IsNullOrEmpty(content.Name))
+                    //get all children of the parent
+                    var oldParent = alphabeticFolder;
+                    var parentChildren = parentFolder.GetAllChildren(_contentService);
+
+                    if (!parentChildren.Any(x => x.Name.ToUpper() == firstLetter))
                     {
-                        // Todo: Check parent doctype
-
-                        IContent parentFolder = _contentService.GetById(content.ParentId);
-                        IContent alphabeticFolder = null;
-                        if (parentFolder.ContentType.Alias == _folderDocType)
-                        {
-                            alphabeticFolder = parentFolder;
-                            parentFolder = _contentService.GetById(parentFolder.ParentId);
-                        }
-
-                        string firstLetter;
-                        int charIndex = 1;
-                        do
-                        {
-                            firstLetter = content.Name.Substring(charIndex - 1, 1).ToUpper();
-                            charIndex++;
-                        }
-                        while (!_allowedCharacters.Contains(firstLetter) && content.Name.Length >= charIndex);
-
-                        if ((alphabeticFolder != null && alphabeticFolder.Name != firstLetter) || alphabeticFolder == null)
-                        {
-                            //Check if id is in allowed ids, if not; don't create folders
-                            if (_allowedParentIds.Length > 0 && !_allowedParentIds.Contains(Convert.ToString(content.ParentId))) return;
-
-                            if (_itemDocTypes.Contains(content.ContentType.Alias))
-                            {
-                                IContent oldParent = alphabeticFolder;
-
-                                long totalChildren;
-                                int childCount = _contentService.CountChildren(parentFolder.Id);
-
-                                var parentChildren = _contentService.GetPagedChildren(parentFolder.Id, 0, childCount, out totalChildren);
-
-                                if (!parentChildren.Any(x => x.Name.ToUpper() == firstLetter))
-                                {
-                                    alphabeticFolder = _contentService.CreateContent(firstLetter, parentFolder.GetUdi(), _folderDocType);
-                                    _contentService.SaveAndPublish(alphabeticFolder);
-                                }
-                                else
-                                {
-                                    var firstItem = parentChildren.Where(x => x.Name.ToUpper() == firstLetter).First();
-                                    alphabeticFolder = _contentService.GetById(firstItem.Id);
-                                }
-
-                                _contentService.Move(content, alphabeticFolder.Id);
-
-                                if (oldParent != null)
-                                {
-                                    DeleteAlphabeticFolder(oldParent);
-                                }
-
-                                OrderChildrenByName(alphabeticFolder);
-                                OrderChildrenByName(parentFolder);
-                            }
-                        }
+                        alphabeticFolder = _contentService.CreateContent(firstLetter, parentFolder.GetUdi(), _options.FolderDocType);
+                        _contentService.SaveAndPublish(alphabeticFolder);
                     }
+                    else
+                    {
+                        var firstItem = parentChildren.Where(x => x.Name.ToUpper() == firstLetter).First();
+                        alphabeticFolder = _contentService.GetById(firstItem.Id);
+                    }
+
+                    _contentService.Move(content, alphabeticFolder.Id);
+
+                    if (oldParent != null)
+                    {
+                        ContentHelper.DeleteAlphabeticFolder(_options.FolderDocType, oldParent, _contentService);
+                    }
+
+                    OrderChildrenByName(alphabeticFolder);
+                    OrderChildrenByName(parentFolder);
                 }
-                catch (Exception ex)
-                {
-                    _logger.Error<AlphabetfoldersComponent>(ex, "CreateAlphabeticFolder exception");
-                    // Todo: Show error to user?
-                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
             }
         }
 
@@ -205,35 +189,16 @@ namespace Infocaster.Umbraco.AlphabetFolders.Composers
         /// </summary>
         void OrderChildrenByName(IContent parent)
         {
-            lock (_syncer)
+            try
             {
-                try
-                {
-                    // Todo: find alternative for getPagedChildren, IContent.Children() doesn't exist at the moment
-                    long totalChildren;
-                    int childCount = _contentService.CountChildren(parent.Id);
-                    var childItems = _contentService.GetPagedChildren(parent.Id, 0, childCount, out totalChildren);
+                var childItems = parent.GetAllChildren(_contentService);
+                var orderedItems = _options.OrderByDescending ? childItems.OrderByDescending(x => x.Name) : childItems.OrderBy(x => x.Name);
 
-                    var orderedItems = _orderByDescending ? childItems.OrderByDescending(x => x.Name) : childItems.OrderBy(x => x.Name);
-
-                    _contentService.Sort(orderedItems);
-                }
-                catch (Exception ex)
-                {
-                    _logger.Error<AlphabetfoldersComponent>(ex, "AlphabetFolders SortChildrenByName exception");
-                   // Todo: show error to umbraco
-                }
+                _contentService.Sort(orderedItems);
             }
-        }
-
-        /// <summary>
-        /// Deletes the alphabetic folder if it does not have any children
-        /// </summary>
-        void DeleteAlphabeticFolder(IContent folder)
-        {
-            if (folder.ContentType.Alias == _folderDocType && !_contentService.HasChildren(folder.Id))
+            catch (Exception ex)
             {
-                _contentService.Delete(folder);
+                _logger.LogError(ex.Message);
             }
         }
     }
