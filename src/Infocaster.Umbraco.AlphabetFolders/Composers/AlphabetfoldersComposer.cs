@@ -1,5 +1,5 @@
-﻿using AlphabetFolder9.Extensions;
-using AlphabetFolder9.Helpers;
+﻿using Infocaster.Umbraco.AlphabetFolders.Extensions;
+using Infocaster.Umbraco.AlphabetFolders.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -13,7 +13,7 @@ using Umbraco.Cms.Core.Notifications;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Extensions;
 
-namespace AlphabetFolder9.Composers
+namespace Infocaster.Umbraco.AlphabetFolders.Composers
 {
     public class AlphabetFoldersComposer : IComposer
     {

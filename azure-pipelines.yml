@@ -33,7 +33,7 @@ stages:
     - task: DotNetCoreCLI@2
       displayName: 'dotnet build'
       inputs:
-        projects: src/Infocaster.UmbracoAwesome.AlphabetFolders/AlphabetFolder.csproj
+        projects: src/Infocaster.Umbraco.AlphabetFolders/Infocaster.Umbraco.AlphabetFolders.csproj
         arguments: '--configuration $(BuildConfiguration)  /p:Version=$(GitVersion.NuGetVersion)'
         versioningScheme: byBuildNumber
 
@@ -41,7 +41,7 @@ stages:
       displayName: 'dotnet pack'
       inputs:
         command: pack
-        packagesToPack: src/Infocaster.UmbracoAwesome.AlphabetFolders/AlphabetFolder.csproj
+        packagesToPack: src/Infocaster.Umbraco.AlphabetFolders/Infocaster.Umbraco.AlphabetFolders.csproj
         nobuild: true
         versioningScheme: byEnvVar
         versionEnvVar: GitVersion.NuGetVersion
