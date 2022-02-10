@@ -1,14 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31410.357
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlphabetFolder", "src\Infocaster.UmbracoAwesome.AlphabetFolders\AlphabetFolder.csproj", "{D0817B15-7C84-40F7-ACD4-524C895446CC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F0265959-5891-4C22-9FA8-EF25D84367ED}"
 	ProjectSection(SolutionItems) = preProject
 		GitVersion.yml = GitVersion.yml
+		LICENSE = LICENSE
 		README.md = README.md
+		readme.txt = readme.txt
 	EndProjectSection
 EndProject
 Global
