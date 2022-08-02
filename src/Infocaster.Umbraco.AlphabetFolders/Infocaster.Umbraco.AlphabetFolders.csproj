@@ -16,7 +16,7 @@
 	  <PackageProjectUrl>https://github.com/Infocaster/AlphabetFolders</PackageProjectUrl>
 	  <PackageIcon>infocaster_nuget_pink.png</PackageIcon>
 	  <PackageReadmeFile>README-NUGET.md</PackageReadmeFile>
-	  <RepositoryUrl>https://github.com/Infocaster/Datefolders</RepositoryUrl>
+	  <RepositoryUrl>https://github.com/Infocaster/AlphabetFolders</RepositoryUrl>
 	  <PackageReleaseNotes>First release for Umbraco 10</PackageReleaseNotes>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
