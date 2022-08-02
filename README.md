@@ -1,5 +1,5 @@
 <h3 align="center">
-<img height="100" src="docs/assets/infocaster_nuget_yellow.svg">
+<img height="100" src="https://raw.githubusercontent.com/Infocaster/.github/main/assets/infocaster_nuget_pink.png">
 </h3>
 
 <h1 align="center">
@@ -42,9 +42,6 @@ Upon installation, the AlphabetFolders package will need several variables in yo
 
 -----
 
-## Credits
-The AlphabetFolders package is made by [Infocaster](https://infocaster.net), a Dutch company and Umbraco Gold Partner dedicated to improving your Umbraco experience.
-
 ## Changelog
 Version 10.0.0
 - Updated to use Umbraco v10
@@ -59,5 +56,5 @@ Version 3.0.0
 - Updated to use Umbraco v8
 
 <a href="https://infocaster.net">
-<img align="right" height="200" src="docs/assets/Infocaster_Corner.png">
+<img align="right" height="200" src="https://raw.githubusercontent.com/Infocaster/.github/main/assets/Infocaster_Corner.png">
 </a>
