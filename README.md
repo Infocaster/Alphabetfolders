@@ -4,11 +4,13 @@
 
 <h1 align="center">
 Alphabetfolders
-</h1>
+
 
 [![Downloads](https://img.shields.io/nuget/dt/Infocaster.Umbraco.AlphabetFolders?color=ffc800)](https://www.nuget.org/packages/Infocaster.Umbraco.AlphabetFolders/)
 [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Infocaster.Umbraco.AlphabetFolders?color=ff0069)](https://www.nuget.org/packages/Infocaster.Umbraco.AlphabetFolders/)
 ![GitHub](https://img.shields.io/github/license/Infocaster/AlphabetFolders?color=ffc800)
+
+</h1>
 
 Alphabetsfolder is <b>the</b> package to make sure that all of your content is ordered alphabetically.
 This package automatically adds all of your new nodes to a folder that seperates the content alphabetically.
