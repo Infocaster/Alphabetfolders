@@ -1,4 +1,4 @@
-﻿namespace AlphabetFolder9.Composers
+﻿namespace Infocaster.Umbraco.AlphabetFolders.Composers
 {
     public class AlphabetConfigBase
     {
