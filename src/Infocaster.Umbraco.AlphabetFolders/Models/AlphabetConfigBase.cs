@@ -1,10 +1,12 @@
-﻿namespace Infocaster.Umbraco.AlphabetFolders.Composers
+﻿using System.Collections.Generic;
+
+namespace Infocaster.Umbraco.AlphabetFolders.Composers
 {
     public class AlphabetConfigBase
     {
-        public string[] ItemDocTypes { get; set; }
-        public int[] AllowedParentIds { get; set; }
+        public List<string> ItemDocTypes { get; set; } = new List<string>();
+        public List<int> AllowedParentIds { get; set; } = new List<int>();
         public string FolderDocType { get; set; }
-        public bool OrderByDescending { get; set; }
+        public bool OrderByDescending { get; set; } = true;
     }
 }

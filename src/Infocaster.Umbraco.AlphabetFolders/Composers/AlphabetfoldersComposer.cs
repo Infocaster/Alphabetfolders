@@ -124,7 +124,7 @@ namespace Infocaster.Umbraco.AlphabetFolders.Composers
             foreach (IContent content in notification.SavedEntities)
             {
                 //Check if id is in allowed ids, if not; don't create folders
-                if (_options.AllowedParentIds == null || !_options.AllowedParentIds.Contains(content.ParentId)) continue;
+                if (_options.AllowedParentIds.Count > 0 && !_options.AllowedParentIds.Contains(content.ParentId)) continue;
 
                 if (_options.ItemDocTypes.Contains(content.ContentType.Alias) && !string.IsNullOrEmpty(content.Name))
                 {
