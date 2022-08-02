@@ -2,7 +2,7 @@
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 
-namespace AlphabetFolder9.Extensions
+namespace Infocaster.Umbraco.AlphabetFolders.Extensions
 {
     static class ContentServiceExtension
     {
