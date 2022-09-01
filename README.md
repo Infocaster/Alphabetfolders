@@ -48,6 +48,9 @@ The Support Module is made by Infocaster, a Dutch company dedicated to improving
 Version 3.0.1
 - Added optional key alphabetfolders:AllowedParentIds to specify specific documents for which the AlphabetFolders need to be made.
 
+Version 3.0.1
+- Added optional key alphabetfolders:AllowedParentIds to specify specific documents for which the AlphabetFolders need to be made.
+
 Version 3.0.0
 - Updated to use umbraco v8
 
