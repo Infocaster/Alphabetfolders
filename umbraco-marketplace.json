@@ -1,0 +1,27 @@
+{
+    "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json",
+    "Title": "Alphabet folders",
+    "Category": "Editor Tools",
+    "PackageType": "Package",
+    "Tags": [
+        "folder",
+        "alphabet",
+        "sort",
+        "content"
+    ],
+    "LicenseTypes": ["Free"],
+    "AuthorDetails": {
+        "Url": "https://infocaster.net",
+        "ImageUrl": "https://github.com/InfocasterTechniek.png",
+        "Description": "Let's make the internet brighter",
+        "Contributors": [
+            "Dennis Heutinck",
+            "Erik Eelman",
+            "Joris Peters",
+            "Bram van den Bogaard",
+            "Fabian Hofman"
+        ]
+    },
+    "IssueTrackerUrl": "https://github.com/Infocaster/Alphabetfolders/issues",
+    "DiscussionForumUrl": "https://github.com/Infocaster/Alphabetfolders/discussions"
+}

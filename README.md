@@ -17,8 +17,8 @@ This package automatically adds all of your new nodes to a folder that seperates
 You'll never need to search for your content again! Especially awesome when you have a lot of content.
 
 ## Requirements
-The Alphabetfolders package is made for Umbraco v8, V9 and V10.
-Version 3+ is made for Umbraco V8, version V9.x is made for Umbraco 9 and V10.x is made for Umbraco 10.
+The Alphabetfolders package is made for Umbraco v8, V9, V10 and v11.
+Version 3+ is made for Umbraco V8, version V9.x is made for Umbraco 9, V10.x is made for Umbraco 10 and v11.x is made for Umbraco 11.
 
 ## Getting Started
 This package is available via NuGet. Visit [the AlphabetFolders package on NuGet](https://www.nuget.org/packages/Infocaster.Umbraco.AlphabetFolders/) for instructions on how to install this package in your website.
@@ -45,6 +45,9 @@ Upon installation, the AlphabetFolders package will need several variables in yo
 -----
 
 ## Changelog
+Version 11.0.0
+- Updated to use Umbraco v11
+
 Version 10.0.0
 - Updated to use Umbraco v10
 
