@@ -1,43 +1,43 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	  <TargetFramework>net7.0</TargetFramework>
-	  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-	  <ContentTargetFolders>.</ContentTargetFolders>
-	  <PackageId>Infocaster.Umbraco.AlphabetFolders</PackageId>
-	  <Title>Infocaster.Umbraco.AlphabetFolders</Title>
-	  <Description>This package creates AlphabetFolders for the specified doctypes and ids for Umbraco v10 and automatically puts content pages in the correct folder</Description>
-	  <Product>Infocaster.Umbraco.AlphabetFolders</Product>
-	  <Authors>Infocaster B.V.</Authors>
-	  <PackageTags>infocaster alphabetfolders order umbraco umbraco11 content management CMS umbraco-marketplace</PackageTags>
-	  <Company>Infocaster B.V.</Company>
-	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-	  <RootNamespace>Infocaster.Umbraco.AlphabetFolders</RootNamespace>
-	  <Copyright>Infocaster B.V. 2022</Copyright>
-	  <PackageProjectUrl>https://github.com/Infocaster/AlphabetFolders</PackageProjectUrl>
-	  <PackageIcon>infocaster_nuget_pink.png</PackageIcon>
-	  <PackageReadmeFile>README-NUGET.md</PackageReadmeFile>
-	  <RepositoryUrl>https://github.com/Infocaster/AlphabetFolders</RepositoryUrl>
-	  <PackageReleaseNotes>First release for Umbraco 11</PackageReleaseNotes>
-	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
-	  <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-  </PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ContentTargetFolders>.</ContentTargetFolders>
+    <PackageId>Infocaster.Umbraco.AlphabetFolders</PackageId>
+    <Title>Infocaster.Umbraco.AlphabetFolders</Title>
+    <Description>This package creates AlphabetFolders for the specified doctypes and ids for Umbraco v10 and automatically puts content pages in the correct folder</Description>
+    <Product>Infocaster.Umbraco.AlphabetFolders</Product>
+    <Authors>Infocaster B.V.</Authors>
+    <PackageTags>infocaster alphabetfolders order umbraco umbraco11 content management CMS umbraco-marketplace</PackageTags>
+    <Company>Infocaster B.V.</Company>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <RootNamespace>Infocaster.Umbraco.AlphabetFolders</RootNamespace>
+    <Copyright>Infocaster B.V. 2022</Copyright>
+    <PackageProjectUrl>https://github.com/Infocaster/AlphabetFolders</PackageProjectUrl>
+    <PackageIcon>infocaster_nuget_pink.png</PackageIcon>
+    <PackageReadmeFile>README-NUGET.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/Infocaster/AlphabetFolders</RepositoryUrl>
+    <PackageReleaseNotes>1 change
 
+- Update to Umbraco 11</PackageReleaseNotes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Umbraco.Cms.Core" Version="11.0.0" />
   </ItemGroup>
-
-	<ItemGroup>
-		<None Include="..\..\docs\assets\infocaster_nuget_pink.png">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-		<None Include="..\..\README-NUGET.md">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-		<None Include="..\..\ReadMe.txt">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
-	</ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\docs\assets\infocaster_nuget_pink.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README-NUGET.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\ReadMe.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 </Project>
