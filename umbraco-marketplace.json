@@ -14,13 +14,23 @@
         "Url": "https://infocaster.net",
         "ImageUrl": "https://github.com/InfocasterTechniek.png",
         "Description": "Let's make the internet brighter",
-        "Contributors": [
-            "Dennis Heutinck",
-            "Erik Eelman",
-            "Joris Peters",
-            "Bram van den Bogaard",
-            "Fabian Hofman"
-        ]
+      "Contributors": [
+        {
+          "Name": "Dennis Heutinck"
+        },
+        {
+          "Name": "Erik Eelman"
+        },
+        {
+          "Name": "Joris Peters"
+        },
+        {
+          "Name": "Bram van den Bogaard"
+        },
+        {
+          "Name": "Fabian Hofman"
+        }
+      ]
     },
     "IssueTrackerUrl": "https://github.com/Infocaster/Alphabetfolders/issues",
     "DiscussionForumUrl": "https://github.com/Infocaster/Alphabetfolders/discussions"
